@@ -1,51 +1,47 @@
-from fastapi import FastAPI ,HTTPException , status
-from datetime import date
-from typing import List
-from pydantic import BaseModel
+from fastapi import FastAPI ,HTTPException , status ,Depends
+from . import crud, models, schemas
+from .database import SessionLocal, engine
 
+
+models.Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI()
 
-birthdays = []
 
-#models
-class Birthdate(BaseModel):
-    date : date
-    name: str
+
+def get_db():
+    db =SessionLocal()
+    try:
+        yield db 
+    finally:
+        db.close()
+
+
 
 
 #routers
-@app.get('/birth/')
-async def retrieve_all_birthdays()->List[Birthdate]:
-    return birthdays
+@app.get('/friend/')
+async def retrieve_all_Friends(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    friends = crud.get_friends(db, skip=skip, limit=limit)
+    return friends
 
-@app.get('/birth/{id}')
-async def retrieve_birthdate(id :int)->Birthdate:
-    if birthdays[id]:
-        return birthdays[id]
-    raise HTTPException(
-        status_code = status.HTTP_404_NOT_FOUND,
-        detail="Event with supplied ID does not exist",
-    )
-
-
-@app.post('/birth/')
-async def create_birthday(birthdate:Birthdate)->dict:
-    birthdays.append(birthdate)
-    return {"message":"birthdate added"}
+@app.get('/friend/{id}' , response_class=schemas.Friend)
+async def retrieve_birthdate(id :int, db: Session = Depends(get_db)):
+    friend = crud.get_friend(id=id, db=db)
+    if friend :
+        return friend
+    raise HTTPException(detail="friend doesn't exist", status_code=status.HTTP_404_NOT_FOUND)
 
 
+@app.post('/friend/add')
+async def add_friend(friend:schemas.Friend)-> schemas.Friend:
+    new_friend = crud.add_friend(friend=friend)
+    return new_friend
 
-@app.delete('/birth/{id}')
-async def delete_birthday(id:int)->dict:
-    if birthdays[id]:
-        birthdays.remove(id)
-        return {"message":"birthdate deleted!"}
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="Event with supplied ID does not exist",
-    )
+
+
+
 
 
 if __name__ =="__main__":
