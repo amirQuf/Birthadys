@@ -1,10 +1,14 @@
 from pydantic import BaseModel
 from datetime import date
+from typing import Union
 
-
-class Birthdate(BaseModel):
+class Friend(BaseModel):
     name: str
-    birthday : date| None = None
-    mobile:str| None = None
-    email:str | None = None
+    birthday : Union [date , None] = None
+    mobile:Union[str, None] = None
+    email:Union [str , None] = None
 
+class FriendIn(BaseModel):
+    name: str
+    birthday : Union [date , None] = None
+    

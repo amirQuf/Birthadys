@@ -1,7 +1,7 @@
 from fastapi import FastAPI ,HTTPException , status ,Depends
-from . import crud, models, schemas
-from .database import SessionLocal, engine
-
+from sql_app import crud, models, schemas
+from sql_app.database import SessionLocal, engine
+from sqlalchemy.orm import Session
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -26,7 +26,7 @@ async def retrieve_all_Friends(skip: int = 0, limit: int = 100, db: Session = De
     friends = crud.get_friends(db, skip=skip, limit=limit)
     return friends
 
-@app.get('/friend/{id}' , response_class=schemas.Friend)
+@app.get('/friend/{id}' , response_model=schemas.Friend)
 async def retrieve_birthdate(id :int, db: Session = Depends(get_db)):
     friend = crud.get_friend(id=id, db=db)
     if friend :
@@ -35,9 +35,13 @@ async def retrieve_birthdate(id :int, db: Session = Depends(get_db)):
 
 
 @app.post('/friend/add')
-async def add_friend(friend:schemas.Friend)-> schemas.Friend:
-    new_friend = crud.add_friend(friend=friend)
-    return new_friend
+async def add_friend(friend:schemas.FriendIn, db: Session = Depends(get_db) )-> schemas.Friend:
+    try:
+        new_friend = crud.add_friend(friend=friend, db=db)
+        return new_friend
+    except:
+        raise HTTPException(detail="something is wrong", status_code=status.HTTP_400_BAD_REQUEST)
+
 
 
 

@@ -9,7 +9,8 @@ __pycache__/
 
 # C extensions
 *.so
-
+#db
+sql_app.db
 # Distribution / packaging
 .Python
 build/
