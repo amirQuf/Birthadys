@@ -6,7 +6,7 @@ def get_friend(db:Session,id:int):
     return db.query(models.Friend).filter(models.Friend.id ==id).first()
 
 def get_birthdays_buddy(db:Session , today:date):
-    return db.query(models.Friend).filter(models.Friend.birthday==today)
+    return db.query(models.Friend).filter(models.Friend.birthday.day == today.day ,models.Friend.birthday.month == models.Friend.month)
 
 
 def get_friends(db: Session, skip: int = 0, limit: int = 100):
