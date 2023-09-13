@@ -1,18 +1,18 @@
 from fastapi import HTTPException , status ,Depends , APIRouter
-from . import crud, schemas
-from app.dependencies import get_db
+import crud, schemas
+from dependencies import get_db
 from sqlalchemy.orm import Session
 from  datetime  import date
 
 
 friends_router = APIRouter()
 
-@friends_router.get('/friend/' ,response_model=schemas.Friend , status_code=200)
+@friends_router.get('/friend/')
 async def retrieve_all_Friends(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     friends = crud.get_friends(db, skip=skip, limit=limit)
     return friends
 
-@friends_router.get('/today/' ,response_model=schemas.Friend , status_code=200)
+@friends_router.get('/today/' )
 async def retrieve_birthday_buddies(db: Session = Depends(get_db)):
     today = date.today()
     friends = crud.get_birthdays_buddy(db=db , today=today)
@@ -37,5 +37,4 @@ async def add_friend(friend:schemas.FriendIn, db: Session = Depends(get_db) )-> 
         return new_friend
     except:
         raise HTTPException(detail="something is wrong", status_code=status.HTTP_400_BAD_REQUEST)
-
 

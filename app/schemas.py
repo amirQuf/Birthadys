@@ -4,7 +4,7 @@ from typing import Union
 
 class Friend(BaseModel):
     name: str
-    birthday : Union [date , None] = None
+    birthday : date 
     mobile:Union[str, None] = None
     email:Union [str , None] = None
 

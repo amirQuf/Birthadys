@@ -1,12 +1,22 @@
 from sqlalchemy .orm import Session
-from . import  models ,schemas
+import  models ,schemas
 from datetime import date
 
 def get_friend(db:Session,id:int):
     return db.query(models.Friend).filter(models.Friend.id ==id).first()
 
+
 def get_birthdays_buddy(db:Session , today:date):
-    return db.query(models.Friend).filter(models.Friend.birthday.day == today.day ,models.Friend.birthday.month == models.Friend.month)
+    print(today.day)
+    print(today.month)
+    result =[]
+    friends = db.query(models.Friend).all()
+    for friend in friends:
+        if friend.birthday.day==today.day and friend.birthday.month ==today.month:
+            result.append(friend)
+    return result
+
+
 
 
 def get_friends(db: Session, skip: int = 0, limit: int = 100):
