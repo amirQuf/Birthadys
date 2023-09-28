@@ -1,7 +1,8 @@
 # MyfriendsList
 
 i always forget my friends birthdays so i want to write api that i save my friends and family birthdays on it and buy them nice gift for them so i start as easy as possibles and then i will make it better and refactor it.
-Certainly! Here's an example of a README file for a Django project:
+### new problem 
+and now i have another problem that should solve to make my life easier  i am using notion for tracking what chapter/vol i read for one manga so now i decide that i can add 
 
 
 ## Table of Contents
@@ -56,8 +57,10 @@ Explain how to use your Django project. Provide instructions for common tasks, s
 
 Outline the key features and functionality of your Django project. Highlight what makes it unique or valuable to users. You can provide a bullet list or go into detail about each feature.
 # Todo
-- docker,...
-- 
+- [x] docker,...
+- [ ] manga problem 
+- [ ] documeting codes
+
 ## Contributing
 
 Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
