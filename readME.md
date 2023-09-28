@@ -58,9 +58,9 @@ Explain how to use your Django project. Provide instructions for common tasks, s
 
 Outline the key features and functionality of your Django project. Highlight what makes it unique or valuable to users. You can provide a bullet list or go into detail about each feature.
 # Todo
-[ ] - docker,...
-[ ] -manga problem 
-[ ] - documeting codes
+- [x] docker,...
+- [ ] manga problem 
+- [ ] documeting codes
 
 ## Contributing
 
